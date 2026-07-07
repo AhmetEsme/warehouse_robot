@@ -17,8 +17,6 @@
   
 
 
-    <!-- BASE FOOTPRINT (standalone test için) -->
-  <link name="base_footprint"/>
 
   <!-- ARM BASE LINK -->
   <link name="arm_base_link">
@@ -37,7 +35,7 @@
       </geometry>
       <origin xyz="0 0 ${arm_base_height/2}" rpy="0 0 0"/>
     </collision>
-    <xacro:inertial_box mass="5.0" x="${arm_base_length}" y="${arm_base_width}" z="${arm_base_height}"/>
+    <xacro:inertial_box mass="0.5" x="${arm_base_length}" y="${arm_base_width}" z="${arm_base_height}"/>
   </link>
 
   <gazebo reference="arm_base_link">
@@ -120,13 +118,7 @@
     <material>Gazebo/Yellow</material>
   </gazebo>
 
-  <!-- ARM BASE JOINT (fixed, standalone test için) -->
-  <joint name="arm_base_joint" type="fixed">
-    <parent link="base_footprint"/>
-    <child link="arm_base_link"/>
-    <origin xyz="0 0 ${arm_base_height/2}" rpy="0 0 0"/>
-  </joint>
-
+ 
   <!-- ARM BASE → LOWERARM -->
   <joint name="arm_base_to_lower_arm" type="revolute">
     <parent link="arm_base_link"/>
