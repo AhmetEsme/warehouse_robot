@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-<xacro:include filename="common_properties.xacro"/>
 
   <!-- PROPERTIES -->
   <xacro:property name="arm_base_length" value="0.08"/>
@@ -124,7 +123,7 @@
     <parent link="arm_base_link"/>
     <child link="lower_arm_link"/>
     <origin xyz="0 0 ${arm_base_height}" rpy="0 0 0"/>
-    <axis xyz="0 1 0"/>
+    <axis xyz="0 -1 0"/>
     <limit lower="0" upper="${pi/2}" effort="100" velocity="100"/>
     <dynamics friction="0.05" damping="0.1"/>
   </joint>
@@ -134,7 +133,7 @@
     <parent link="lower_arm_link"/>
     <child link="upper_arm_link"/>
     <origin xyz="0 0 ${lower_arm_length}" rpy="0 0 0"/>
-    <axis xyz="0 1 0"/>
+    <axis xyz="0 -1 0"/>
     <limit lower="0" upper="${pi/2}" effort="100" velocity="100"/>
     <dynamics friction="0.05" damping="0.1"/>
   </joint>
@@ -144,10 +143,47 @@
     <parent link="upper_arm_link"/>
     <child link="gripper_link"/>
     <origin xyz="0 0 ${upper_arm_length}" rpy="0 0 0"/>
-    <axis xyz="0 1 0"/>
+    <axis xyz="0 -1 0"/>
     <limit lower="0" upper="${pi/2}" effort="100" velocity="100"/>
     <dynamics friction="0.05" damping="0.1"/>
   </joint>
+
+  <!-- JOINT STATE PUBLISHER (kol) -->
+  <gazebo>
+    <plugin filename="gz-sim-joint-state-publisher-system"
+            name="gz::sim::systems::JointStatePublisher">
+      <joint_name>arm_base_to_lower_arm</joint_name>
+      <joint_name>lower_arm_to_upper_arm</joint_name>
+      <joint_name>upper_arm_to_gripper</joint_name>
+    </plugin>
+  </gazebo>
+
+  <!-- JOINT POSITION CONTROLLER 1: lower, p_gain 4.0 -->
+  <gazebo>
+    <plugin filename="gz-sim-joint-position-controller-system"
+            name="gz::sim::systems::JointPositionController">
+      <joint_name>arm_base_to_lower_arm</joint_name>
+      <p_gain>4.0</p_gain>
+    </plugin>
+  </gazebo>
+
+  <!-- JOINT POSITION CONTROLLER 2: upper, p_gain 3.0 -->
+  <gazebo>
+    <plugin filename="gz-sim-joint-position-controller-system"
+            name="gz::sim::systems::JointPositionController">
+      <joint_name>lower_arm_to_upper_arm</joint_name>
+      <p_gain>3.0</p_gain>
+    </plugin>
+  </gazebo>
+
+  <!-- JOINT POSITION CONTROLLER 3: gripper, p_gain 2.0 -->
+  <gazebo>
+    <plugin filename="gz-sim-joint-position-controller-system"
+            name="gz::sim::systems::JointPositionController">
+      <joint_name>upper_arm_to_gripper</joint_name>
+      <p_gain>2.0</p_gain>
+    </plugin>
+  </gazebo>
 
   
 
