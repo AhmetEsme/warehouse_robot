@@ -1,7 +1,9 @@
 # warehouse_robot
 
 A ROS2 Level 2 project: a warehouse robot with a differential-drive mobile base and a 3-DOF robotic arm, simulated in Gazebo Harmonic.
+## Demo
 
+![demo](demo.gif)
 ---
 
 ## English
